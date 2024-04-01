@@ -7,8 +7,10 @@ from doctr.io import DocumentFile
 from doctr.models import ocr_predictor
 
 def work():
+
     # Allow the user to select files
     filez = askopenfilenames(parent=root, title='Choose a file')
+
     start_time = time.time()
     curr_time = time.strftime("%H:%M:%S", time.localtime())
     print("Start Time:", curr_time)
@@ -56,9 +58,12 @@ def work():
         print("Document saved as", file_path)
     else:
         print("Save operation canceled.")
+
+    decoded_label = tk.Label(root, text="Completed", bg="#C0B974",font=("Helvetica", 25))
+    decoded_label.place(x=626, y=498)
+
      # Calculate and print elapsed time
-    decoded_label = tk.Label(root, text="Completed", bg="#C0B974",font=("Helvetica", 14))
-    decoded_label.place(x=462, y=523)
+
     seconds = time.time() - start_time
     print('Time Taken:', time.strftime("%H:%M:%S", time.gmtime(seconds)))
 
