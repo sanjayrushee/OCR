@@ -2,9 +2,11 @@ from tkinter import PhotoImage, Label, Tk, Button
 from tkinter.filedialog import askopenfilenames, asksaveasfilename
 import tkinter as tk
 import time
+import cv2
+import pytesseract
 from docx import Document
-from doctr.io import DocumentFile
-from doctr.models import ocr_predictor
+#from doctr.io import DocumentFile
+#from doctr.models import ocr_predictor
 
 def work():
 
@@ -15,15 +17,22 @@ def work():
     curr_time = time.strftime("%H:%M:%S", time.localtime())
     print("Start Time:", curr_time)
 
-    # Initialize OCR model
-    model = ocr_predictor(pretrained=True)
 
-    # Create a new Document object to store the extracted text
-    document = Document()
+ # text recognition
 
-    for ii in filez:
+    # read image
+    
+
+    for fileLoc in filez:
+        im = cv2.imread(fileLoc)
+        # configurations
+        config = ('-l eng --oem 1 --psm 3')
+        #pytessercat
+        text = pytesseract.image_to_string(im, config=config)
+        # print text
+        text = text.split('\n')
         # Load image file as DocumentFile
-        doc = DocumentFile.from_images(ii)
+        '''doc = DocumentFile.from_images(ii)
         
         # Perform OCR
         result = model(doc)
@@ -40,13 +49,13 @@ def work():
             return string
         
         # Get extracted text
-        ss = textData()
+        ss = textData()'''
 
         # Add extracted text to the Word document
-        para = document.add_paragraph(ss)
+        para = document.add_paragraph(text)
         para.alignment = 1
         document.add_page_break()
-        print("Text extracted from", ii)
+        print("Text extracted from", fileLoc)
 
     # Allow the user to choose the folder and filename to save the document
     file_path = asksaveasfilename(defaultextension=".docx", filetypes=[("Word Document", "*.docx")], parent=root)
@@ -72,7 +81,7 @@ if __name__ == "__main__":
     
     # Initialize Tkinter root window
     root = Tk()
-    root.title("Steganography")
+    root.title("Image to Docx")
     root.geometry("1360x710")
     root.config(bg="#F0F0F0")
 
