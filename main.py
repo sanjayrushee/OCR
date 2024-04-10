@@ -16,6 +16,7 @@ def work():
     start_time = time.time()
     curr_time = time.strftime("%H:%M:%S", time.localtime())
     print("Start Time:", curr_time)
+    document = Document()
 
 
  # text recognition
